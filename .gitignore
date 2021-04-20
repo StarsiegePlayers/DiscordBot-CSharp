@@ -5,7 +5,7 @@
 
 Properties/
 launchSettings.json
-
+config.json
 
 # User-specific files
 *.rsuser

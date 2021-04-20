@@ -6,17 +6,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Phoenix\**" />
+    <Compile Remove="Unicorn\**" />
+    <EmbeddedResource Remove="Phoenix\**" />
+    <EmbeddedResource Remove="Unicorn\**" />
+    <None Remove="Phoenix\**" />
+    <None Remove="Unicorn\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="DSharpPlus" Version="4.0.0-rc3" />
     <PackageReference Include="DSharpPlus.CommandsNext" Version="4.0.0-rc3" />
     <PackageReference Include="DSharpPlus.Interactivity" Version="4.0.0-rc3" />
     <PackageReference Include="DSharpPlus.Lavalink" Version="4.0.0-rc3" />
     <PackageReference Include="DSharpPlus.VoiceNext" Version="4.0.0-rc3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Unicorn\" />
-    <Folder Include="Phoenix\" />
   </ItemGroup>
 
 </Project>

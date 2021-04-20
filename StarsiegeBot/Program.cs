@@ -32,7 +32,7 @@ namespace StarsiegeBot
         protected string BotName { get; set; }
 
 
-        public static void Main(string[] args)
+        public static void Main()
         {
             // since we cannot make the entry method asynchronous,
             // let's pass the execution to asynchronous code
@@ -49,7 +49,7 @@ namespace StarsiegeBot
             // next, let's load the values from that file
             // to our client's configuration
             var json = "";
-            using (var fs = File.OpenRead("config.json"))
+            using (var fs = File.OpenRead("../../../config.json"))
             using (var sr = new StreamReader(fs, new UTF8Encoding(false)))
                 json = await sr.ReadToEndAsync();
             var cfgjson = JsonConvert.DeserializeObject<ConfigJson>(json);
@@ -196,7 +196,16 @@ namespace StarsiegeBot
             {
                 // yes, the user lacks required permissions, 
                 // let them know
-                Console.WriteLine(ex.FailedChecks.Count);
+                Console.WriteLine(ex.FailedChecks[0]);
+
+                // cheack each failure. if the failure to do the command is a cooldown, do nothing.
+                foreach (var item in ex.FailedChecks)
+                {
+                    if (item is DSharpPlus.CommandsNext.Attributes.CooldownAttribute)
+                        return;
+                }
+
+                // so it wasn't a cooldown isue, tell them they failed permissions.
                 var emoji = DiscordEmoji.FromName(e.Context.Client, ":no_entry:");
 
                 // let's wrap the response into an embed
@@ -268,7 +277,6 @@ namespace StarsiegeBot
         }
         private Task Event_GuildAvailable(DiscordClient d, GuildCreateEventArgs e)
         {
-            string gId = e.Guild.Id.ToString();
             // let's log the name of the guild that was just
             // sent to our client
             d.Logger.LogInformation(BotEventId, $"Guild available: {e.Guild.Name}");
